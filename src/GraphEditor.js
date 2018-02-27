@@ -43,6 +43,7 @@ export default class GraphEditor extends React.Component {
             gYAxisLabel={'Y'}
             gLine1Slope={this.props.gLine1Slope}
             gLine2Slope={this.props.gLine2Slope}
+            gLines={this.props.gLines}
             gLine1OffsetX={this.props.gLine1OffsetX}
             gLine1OffsetY={this.props.gLine1OffsetY}
             gLine2OffsetX={this.props.gLine2OffsetX}
@@ -124,6 +125,7 @@ export default class GraphEditor extends React.Component {
             gYAxisLabel={this.props.gCobbDouglasYName}
             gLine1Slope={this.props.gLine1Slope}
             gLine2Slope={this.props.gLine2Slope}
+            gLines={this.props.gLines}
             gLine1OffsetX={this.props.gLine1OffsetX}
             gLine1OffsetY={this.props.gLine1OffsetY}
             gLine2OffsetX={this.props.gLine2OffsetX}
@@ -203,6 +205,7 @@ export default class GraphEditor extends React.Component {
             gYAxisLabel={this.props.gYAxisLabel}
             gLine1Slope={this.props.gLine1Slope}
             gLine2Slope={this.props.gLine2Slope}
+            gLines={this.props.gLines}
             gLine1OffsetX={this.props.gLine1OffsetX}
             gLine1OffsetY={this.props.gLine1OffsetY}
             gLine2OffsetX={this.props.gLine2OffsetX}
@@ -268,6 +271,7 @@ export default class GraphEditor extends React.Component {
             gYAxisLabel={this.props.gYAxisLabel}
             gLine1Slope={this.props.gLine1Slope}
             gLine2Slope={this.props.gLine2Slope}
+            gLines={this.props.gLines}
             gLine1OffsetX={this.props.gLine1OffsetX}
             gLine1OffsetY={this.props.gLine1OffsetY}
             gLine2OffsetX={this.props.gLine2OffsetX}
@@ -335,6 +339,7 @@ export default class GraphEditor extends React.Component {
                          gYAxisLabel={this.props.gYAxisLabel}
                          gLine1Slope={this.props.gLine1Slope}
                          gLine2Slope={this.props.gLine2Slope}
+                         gLines={this.props.gLines}
                          gLine1OffsetX={this.props.gLine1OffsetX}
                          gLine1OffsetY={this.props.gLine1OffsetY}
                          gLine2OffsetX={this.props.gLine2OffsetX}
@@ -766,6 +771,7 @@ GraphEditor.propTypes = {
     gLine1SlopeEditable: PropTypes.bool.isRequired,
     gLine2Slope: PropTypes.number.isRequired,
     gLine2SlopeEditable: PropTypes.bool.isRequired,
+    gLines: PropTypes.array,
     gLine1OffsetX: PropTypes.number.isRequired,
     gLine1OffsetY: PropTypes.number.isRequired,
     gLine2OffsetX: PropTypes.number.isRequired,

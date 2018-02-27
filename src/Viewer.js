@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GraphEditor from './GraphEditor';
 import GraphViewer from './GraphViewer';
 import { exportGraph, importGraph, defaultGraph } from './GraphMapping';
-import { authedFetch, getSubmission } from './utils';
+import { authedFetch, getSubmission, forceFloat } from './utils';
 
 class Viewer extends Component {
     constructor(props) {
@@ -65,6 +65,7 @@ class Viewer extends Component {
             gXAxisLabelEditable={this.state.gXAxisLabelEditable}
             gYAxisLabel={this.state.gYAxisLabel}
             gYAxisLabelEditable={this.state.gYAxisLabelEditable}
+            gLines={this.state.gLines}
             gLine1OffsetX={this.state.gLine1OffsetX}
             gLine1OffsetY={this.state.gLine1OffsetY}
             gLine2OffsetX={this.state.gLine2OffsetX}
@@ -149,6 +150,7 @@ class Viewer extends Component {
             gXAxisLabelEditable={this.state.gXAxisLabelEditable}
             gYAxisLabel={this.state.gYAxisLabel}
             gYAxisLabelEditable={this.state.gYAxisLabelEditable}
+            gLines={this.state.gLines}
             gLine1OffsetX={this.state.gLine1OffsetX}
             gLine1OffsetY={this.state.gLine1OffsetY}
             gLine1OffsetXInitial={this.state.gLine1OffsetXInitial}
@@ -239,6 +241,21 @@ class Viewer extends Component {
         });
         document.addEventListener('l2initial', function() {
             me.handleInitial();
+        });
+
+        document.addEventListener('updateL1Transform', function(e) {
+            console.log('got updateL1Transform');
+            const transformation = e.detail.transformation;
+            console.log('updating transformations state', transformation);
+
+            me.setState({
+                gLines: [{
+                    number: 1,
+                    transformations: [
+                        transformation
+                    ]
+                }]
+            });
         });
 
         document.addEventListener('l1offset', function(e) {

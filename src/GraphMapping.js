@@ -75,8 +75,10 @@ const exportGraph = function(state) {
         cobb_douglas_a: forceFloat(state.gCobbDouglasA),
         cobb_douglas_a_editable: state.gCobbDouglasAEditable,
         cobb_douglas_k: forceFloat(state.gCobbDouglasK),
-        cobb_douglas_k_editable: state.gCobbDouglasKEditable
-    }
+        cobb_douglas_k_editable: state.gCobbDouglasKEditable,
+
+        lines: state.gLines
+    };
 
     if (state.gType === 3) {
         // Don't send all these cobb-douglas related fields if not
@@ -210,7 +212,8 @@ const importGraph = function(json, obj) {
         gCobbDouglasAInitial: window.parseFloat(json.cobb_douglas_a),
         gCobbDouglasLInitial: window.parseFloat(json.cobb_douglas_l),
         gCobbDouglasKInitial: window.parseFloat(json.cobb_douglas_k),
-        gCobbDouglasAlphaInitial: window.parseFloat(json.cobb_douglas_alpha)
+        gCobbDouglasAlphaInitial: window.parseFloat(json.cobb_douglas_alpha),
+        gLines: json.lines
     };
     obj.setState(updateObj);
 };
@@ -288,7 +291,9 @@ const defaultGraph = {
     gCobbDouglasKName: 'K',
     gCobbDouglasAlpha: 0.65,
     gCobbDouglasAlphaEditable: false,
-    gCobbDouglasYName: 'Y'
+    gCobbDouglasYName: 'Y',
+
+    gLines: []
 };
 
 export { exportGraph, importGraph, defaultGraph };

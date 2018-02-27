@@ -137,6 +137,7 @@ export default class JXGBoard extends React.Component {
                 gLine1Slope: options.gLine1Slope,
                 gLine1SlopeInitial: options.gLine1SlopeInitial,
                 gLine2Slope: options.gLine2Slope,
+                gLines: options.gLines,
                 gLine1OffsetX: options.gLine1OffsetX,
                 gLine1OffsetY: options.gLine1OffsetY,
                 gLine1OffsetXInitial: options.gLine1OffsetXInitial,
@@ -177,7 +178,8 @@ export default class JXGBoard extends React.Component {
                 submission: options.submission,
                 isSubmitted: options.isSubmitted,
                 locked: this.props.locked,
-                shadow: this.props.shadow
+                shadow: this.props.shadow,
+                useRotation: (options.gType === 1) ? true : false
             });
         }
     }
@@ -197,6 +199,7 @@ export default class JXGBoard extends React.Component {
             'gLine1Slope',
             'gLine1Slopeinitial',
             'gLine2Slope',
+            'gLines',
             'gLine1OffsetX',
             'gLine1OffsetY',
             'gLine1OffsetXInitial',
@@ -236,6 +239,7 @@ export default class JXGBoard extends React.Component {
         for (let i = 0; i < updateProps.length; i++) {
             let prop = updateProps[i];
             if (this.props[prop] !== nextProps[prop]) {
+                console.log('needsUpdate', prop);
                 needsUpdate = true;
                 break;
             }
@@ -261,6 +265,7 @@ export default class JXGBoard extends React.Component {
                 gLine1Slope: nextProps.gLine1Slope,
                 gLine1SlopeInitial: nextProps.gLine1SlopeInitial,
                 gLine2Slope: nextProps.gLine2Slope,
+                gLines: nextProps.gLines,
                 gLine1OffsetX: nextProps.gLine1OffsetX,
                 gLine1OffsetY: nextProps.gLine1OffsetY,
                 gLine1OffsetXInitial: nextProps.gLine1OffsetXInitial,
@@ -322,6 +327,7 @@ export default class JXGBoard extends React.Component {
             gLine1Slope: this.props.gLine1Slope,
             gLine1SlopeInitial: this.props.gLine1SlopeInitial,
             gLine2Slope: this.props.gLine2Slope,
+            gLines: this.props.gLines,
             gLine1OffsetX: this.props.gLine1OffsetX,
             gLine1OffsetY: this.props.gLine1OffsetY,
             gLine1OffsetXInitial: this.props.gLine1OffsetXInitial,
@@ -393,6 +399,7 @@ JXGBoard.propTypes = {
     gLine1Slope: PropTypes.number,
     gLine1SlopeInitial: PropTypes.number,
     gLine2Slope: PropTypes.number,
+    gLines: PropTypes.array,
     gLine1OffsetX: PropTypes.number,
     gLine1OffsetY: PropTypes.number,
     gLine1OffsetXInitial: PropTypes.number,

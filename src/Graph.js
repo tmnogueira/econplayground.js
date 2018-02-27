@@ -208,7 +208,7 @@ class Graph {
      * intercepts.
      */
     showIntersection(l1, l2, isShadow) {
-        let i = this.board.create('intersection', [l1, l2, 0], {
+        const i = this.board.create('intersection', [l1, l2, 0], {
             name: this.options.gIntersectionLabel || '',
             withLabel: !isShadow,
             fixed: true,
@@ -219,7 +219,63 @@ class Graph {
             strokeColor: isShadow ? 'rgb(150, 150, 150)' : 'red'
         });
 
-        let p1 = this.board.create('point', [0, i.Y()], {
+        //const me = this;
+        /*this.l1.setPosition(window.JXG.COORDS_BY_USER, [
+            forceFloat(me.options.gLine1OffsetX + i.X()),
+            forceFloat(me.options.gLine1OffsetY + i.Y())
+        ]);
+        this.l1.fullUpdate(true);*/
+
+        if (this.options.useRotation === true) {
+            console.log('rotating');
+            // Rotate l1 around the intersection.
+            const rotation = this.board.create('transform', [
+                this.options.gLine1Slope || 1, i
+            ], {
+                type: 'rotate'
+            });
+            if (this.t) {
+                console.log('melting', rotation);
+                //this.t = this.t.melt(rotation);
+            } else {
+                console.log('binding rotation:', rotation);
+                //rotation.bindTo(this.l1);
+            }
+            rotation.bindTo(this.l1);
+            window.l1 = this.l1;
+
+            //rotation.applyOnce(this.l1.points);
+
+            //this.l1.transformations = [];
+            //rotation.bindTo(this.l1);
+            this.board.update();
+
+            if (this.l1.transformations.length) {
+                console.log(this.l1.transformations[0]);
+            }
+            console.log(this.l1.transformations.length, 'transformations');
+
+            /*for (let j = 0; j < this.l1.transformMat.length; j++) {
+                console.log(
+                    j,
+                    this.l1, this.l1.X(), this.l1.Y(),
+                    this.l1.transformMat[j][0],
+                    this.l1.transformMat[j][1],
+                    this.l1.transformMat[j][2]
+                );
+            }*/
+
+            /*const t1 = this.l1.transformMat[1];
+            const t2 = this.l1.transformMat[2];*/
+
+            /*const evt = new CustomEvent('updateL1Transform', {
+                detail: {transformations: [t1, t2]}
+            });
+            console.log('evt', evt);*/
+            //document.dispatchEvent(evt);
+        }
+
+        const p1 = this.board.create('point', [0, i.Y()], {
             size: 0,
             name: this.options.gIntersectionHorizLineLabel || '',
             withLabel: !isShadow,
@@ -237,7 +293,7 @@ class Graph {
             layer: 4
         });
 
-        let p2 = this.board.create('point', [i.X(), 0], {
+        const p2 = this.board.create('point', [i.X(), 0], {
             size: 0,
             name: this.options.gIntersectionVertLineLabel || '',
             withLabel: !isShadow,
@@ -290,7 +346,7 @@ class DemandSupplyGraph extends Graph {
 
             const l1fShadow = this.board.create(
                 'functiongraph',
-                [f1Shadow, -30, 30], {
+                [f1Shadow, -20, 20], {
                     withLabel: false,
                     strokeWidth: 2,
                     strokeColor: this.shadowColor,
@@ -306,7 +362,7 @@ class DemandSupplyGraph extends Graph {
 
             const lfShadow = this.board.create(
                 'functiongraph',
-                [fShadow, -30, 30], {
+                [fShadow, -20, 20], {
                     withLabel: false,
                     strokeWidth: 2,
                     strokeColor: this.shadowColor,
@@ -390,7 +446,7 @@ class NonLinearDemandSupplyGraph extends Graph {
 
             const l1fShadow = this.board.create(
                 'functiongraph',
-                [f1Shadow, -30, 30], {
+                [f1Shadow, -20, 20], {
                     withLabel: false,
                     strokeWidth: 2,
                     strokeColor: this.shadowColor,
@@ -408,7 +464,7 @@ class NonLinearDemandSupplyGraph extends Graph {
 
             const l2fShadow = this.board.create(
                 'functiongraph',
-                [f2Shadow, -30, 30], {
+                [f2Shadow, -20, 20], {
                     withLabel: false,
                     strokeWidth: 2,
                     strokeColor: this.shadowColor,
@@ -433,18 +489,34 @@ class NonLinearDemandSupplyGraph extends Graph {
             this.showIntersection(l1fShadow, l2fShadow, true);
         }
 
+
         const f1 = function(x) {
-            const slope = me.options.gLine1Slope || 1;
-            return (x - 2.5) * slope + 2.5;
+            return x;
         };
 
-        this.l1 = this.board.create('functiongraph', [f1, -30, 30], {
+        this.l1 = this.board.create('functiongraph', [f1, -20, 20], {
             name: this.options.gLine1Label,
             withLabel: true,
             strokeWidth: 2,
             strokeColor: this.l1Color,
             fixed: this.areLinesFixed
         });
+
+        /*this.l1 = this.board.create(
+            'line',
+            [
+                [2.5, 2.5 + this.options.gLine1OffsetY +
+                 this.options.l1SubmissionOffset],
+                [3.5, 2.5 + this.options.gLine1OffsetY +
+                 this.options.l1SubmissionOffset]
+            ], {
+                name: this.options.gLine1Label,
+                withLabel: true,
+                label: { position: 'rt', offset: [-10, -20] },
+                strokeColor: this.l1Color,
+                strokeWidth: 2,
+                fixed: this.areLinesFixed
+            });*/
 
         const f = function(x) {
             return (1 - alpha) *
@@ -453,7 +525,7 @@ class NonLinearDemandSupplyGraph extends Graph {
                 (x ** -alpha);
         };
 
-        this.l2 = this.board.create('functiongraph', [f, -30, 30], {
+        this.l2 = this.board.create('functiongraph', [f, -20, 20], {
             name: this.options.gLine2Label,
             withLabel: true,
             strokeWidth: 2,
@@ -461,10 +533,53 @@ class NonLinearDemandSupplyGraph extends Graph {
             fixed: this.areLinesFixed
         });
 
-        this.l1.setPosition(window.JXG.COORDS_BY_USER, [
+        //console.log(this.options.gLines[0]);
+        if (this.options.gLines[0]) {
+            /*const rotation = this.board.create('transform', [
+                this.options.gLine1Slope || 1, i
+            ], {
+                type: 'rotate'
+                });*/
+            //rotation.bindTo(this.l1);
+            //this.board.update();
+            /*const emptyMatrix = {
+                z1: 1, x1: 0, y1: 0,
+                z2: 1, x2: 0, y2: 0,
+                z3: 1, x3: 0, y3: 0
+            };*/
+            let transformations = [];
+            if (this.options.gLines[0].transformations[0]) {
+                transformations.push(
+                    this.options.gLines[0].transformations[0]
+                );
+            }
+
+            transformations.forEach(function(t, idx) {
+                console.log(idx, 'loading transforming position...', t);
+                let transform = me.board.create('transform', [
+                    t.z1, t.x1, t.y1,
+                    t.z2, t.x2, t.y2,
+                    t.z3, t.x3, t.y3
+                ], {
+                    type: 'generic'
+                });
+                console.log('l1', me.l1, transform);
+                transform.bindTo(me.l1);
+                me.t = transform;
+            });
+
+            this.board.update();
+            console.log(this.l1.transformations.length, 'transformations');
+
+            //t1.applyOnce(this.l1);
+            //t2.applyOnce(this.l1);
+            //t1.bindTo(this.l1);
+            //t2.bindTo(this.l1);
+        }
+        /*this.l1.setPosition(window.JXG.COORDS_BY_USER, [
             forceFloat(this.options.gLine1OffsetX),
             forceFloat(this.options.gLine1OffsetY)
-        ]);
+        ]);*/
         this.l2.setPosition(window.JXG.COORDS_BY_USER, [
             forceFloat(this.options.gLine2OffsetX),
             forceFloat(this.options.gLine2OffsetY)
@@ -472,19 +587,34 @@ class NonLinearDemandSupplyGraph extends Graph {
 
         // This is necessary, because otherwise the setPosition call
         // won't have an effect until the graph is interacted with.
-        this.l1.fullUpdate(true);
+        //this.l1.fullUpdate(true);
         this.l2.fullUpdate(true);
 
         this.l1.on('mouseup', function() {
-            const xOffset = me.l1.transformations[0].matrix[1][0];
-            const yOffset = me.l1.transformations[0].matrix[2][0];
-            const offsetEvt = new CustomEvent('l1offset', {
-                detail: {
-                    x: xOffset,
-                    y: yOffset
-                }
+            console.log('hey!');
+            const transformations = [];
+            me.l1.transformations.forEach(function(t) {
+                transformations.push({
+                    z1: forceFloat(t.matrix[0][0]),
+                    x1: forceFloat(t.matrix[0][1]),
+                    y1: forceFloat(t.matrix[0][2]),
+                    z2: forceFloat(t.matrix[1][0]),
+                    x2: forceFloat(t.matrix[1][1]),
+                    y2: forceFloat(t.matrix[1][2]),
+                    z3: forceFloat(t.matrix[2][0]),
+                    x3: forceFloat(t.matrix[2][1]),
+                    y3: forceFloat(t.matrix[2][2])
+                });
             });
-            document.dispatchEvent(offsetEvt);
+            const transformation = transformations.length ?
+                  transformations[0] : null;
+            console.log('transformation', transformation);
+            console.log('my transformations', transformations);
+
+            const evt = new CustomEvent('updateL1Transform', {
+                detail: {transformation: transformation}
+            });
+            document.dispatchEvent(evt);
         });
 
         this.l2.on('mouseup', function() {
@@ -541,7 +671,7 @@ class CobbDouglasGraph extends Graph {
                     (x ** (1 - me.options.gCobbDouglasAlphaInitial));
             };
 
-            this.board.create('functiongraph', [fShadow, -30, 30], {
+            this.board.create('functiongraph', [fShadow, -20, 20], {
                 name: this.options.gLine1Label,
                 withLabel: false,
                 strokeWidth: 2,
@@ -603,7 +733,7 @@ class ConsumptionLeisureGraph extends Graph {
                 return (me.options.gA1Initial - x) * me.options.gA2Initial;
             }
 
-            this.board.create('functiongraph', [f1Shadow, -30, 30], {
+            this.board.create('functiongraph', [f1Shadow, -20, 20], {
                 name: this.options.gLine1Label,
                 withLabel: false,
                 strokeWidth: 2,
@@ -618,7 +748,7 @@ class ConsumptionLeisureGraph extends Graph {
             return (me.options.gA1 - x) * me.options.gA2;
         };
 
-        this.l1 = this.board.create('functiongraph', [f1, -30, 30], {
+        this.l1 = this.board.create('functiongraph', [f1, -20, 20], {
             name: this.options.gLine1Label,
             withLabel: true,
             strokeWidth: 2,
@@ -689,7 +819,7 @@ class ConsumptionSavingGraph extends Graph {
                     (me.options.gA1Initial + me.options.gA3Initial - x);
             }
 
-            this.board.create('functiongraph', [f1Shadow, -30, 30], {
+            this.board.create('functiongraph', [f1Shadow, -20, 20], {
                 withLabel: false,
                 strokeWidth: 2,
                 strokeColor: this.shadowColor,
@@ -760,7 +890,7 @@ class ConsumptionSavingGraph extends Graph {
                 (me.options.gA1 + me.options.gA3 - x);
         };
 
-        this.l1 = this.board.create('functiongraph', [f1, -30, 30], {
+        this.l1 = this.board.create('functiongraph', [f1, -20, 20], {
             name: this.options.gLine1Label,
             withLabel: true,
             strokeWidth: 2,
