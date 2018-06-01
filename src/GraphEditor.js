@@ -11,6 +11,8 @@ import CommonGraphSettings from './editors/CommonGraphSettings';
 import JXGBoard from './JXGBoard';
 import {displayGraphType} from './utils';
 
+import ScrollMagic from 'scrollmagic';
+
 export default class GraphEditor extends React.Component {
     title() {
         return (
@@ -447,7 +449,7 @@ export default class GraphEditor extends React.Component {
                 {this.title()}
                 <form>
                     <div className="row">
-                        <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div id="graph-pin" className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
                             <JXGBoard
                                 id={'editing-graph'}
                                 width={540}
@@ -564,6 +566,15 @@ export default class GraphEditor extends React.Component {
     }
     handleSaveGraph() {
         this.props.saveGraph();
+    }
+    componentDidMount() {
+        console.log('hello nick');
+        var controller = new ScrollMagic.Controller();
+        console.log(controller);
+
+        new ScrollMagic.Scene({duration: 200})
+            .setPin("#graph-pin")
+            .addTo(controller);
     }
 }
 
