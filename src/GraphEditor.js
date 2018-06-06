@@ -29,13 +29,15 @@ export default class GraphEditor extends React.Component {
         }
         if (this.props.gType === 0) {
             // Demand-Supply
+            if (window.outerWidth > 992) {
             return (
                 <div className="GraphEditor">
                     {this.title()}
                     <form>
                         <StickyContainer className="sticky-container row">
-                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 border-0">
-                                <Sticky> {({style }) => { return (
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <Sticky>
+                                    {({style }) => { return (
                                     // insert here
                                     <div style={style} >
                                         <JXGBoard
@@ -127,6 +129,98 @@ export default class GraphEditor extends React.Component {
                     </form>
                 </div>
             );
+            } else {
+            return (
+                <div className="GraphEditor">
+                    {this.title()}
+                    <form>
+                        <div className="row">
+                            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                        <JXGBoard
+                                            id={'editing-graph'}
+                                            width={540}
+                                            height={288}
+                                            gType={this.props.gType}
+                                            gLine1Label={this.props.gLine1Label}
+                                            gLine2Label={this.props.gLine2Label}
+                                            gXAxisLabel={this.props.gXAxisLabel}
+                                            gYAxisLabel={this.props.gYAxisLabel}
+                                            gLine1Slope={this.props.gLine1Slope}
+                                            gLine2Slope={this.props.gLine2Slope}
+                                            gLine1OffsetX={this.props.gLine1OffsetX}
+                                            gLine1OffsetY={this.props.gLine1OffsetY}
+                                            gLine2OffsetX={this.props.gLine2OffsetX}
+                                            gLine2OffsetY={this.props.gLine2OffsetY}
+                                            gShowIntersection={this.props.gShowIntersection}
+                                            gIntersectionLabel={this.props.gIntersectionLabel}
+                                            gIntersectionHorizLineLabel={this.props.gIntersectionHorizLineLabel}
+                                            gIntersectionVertLineLabel={this.props.gIntersectionVertLineLabel}
+
+                                            gCobbDouglasA={this.props.gCobbDouglasA}
+                                            gCobbDouglasAName={this.props.gCobbDouglasAName}
+                                            gCobbDouglasL={this.props.gCobbDouglasL}
+                                            gCobbDouglasLName={this.props.gCobbDouglasLName}
+                                            gCobbDouglasK={this.props.gCobbDouglasK}
+                                            gCobbDouglasKName={this.props.gCobbDouglasKName}
+                                            gCobbDouglasAlpha={this.props.gCobbDouglasAlpha}
+                                        />
+                                        <CommonGraphEditor
+                                            gTitle={this.props.gTitle}
+                                            gInstructorNotes={this.props.gInstructorNotes}
+                                            gDescription={this.props.gDescription}
+                                            updateGraph={this.props.updateGraph}
+                                        />
+                                        {this.props.gId &&
+                                                <div className="form-group">
+                                                    <a href={"/graph/" + this.props.gId + "/public/"}
+                                                        className="btn btn-secondary">Student View</a>
+                                                </div>
+                                        }
+                                    </div>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <CommonGraphSettings
+                                gAssignmentType={this.props.gAssignmentType}
+                                gNeedsSubmit={this.props.gNeedsSubmit}
+                                gDisplayFeedback={this.props.gDisplayFeedback}
+                                gShowIntersection={this.props.gShowIntersection}
+                                gDisplayShadow={this.props.gDisplayShadow}
+                                gIsPublished={this.props.gIsPublished}
+                                updateGraph={this.props.updateGraph}
+                            />
+                            <DemandSupplyEditor
+                                displayLabels={true}
+                                displaySliders={true}
+                                isInstructor={true}
+                                gLine1Label={this.props.gLine1Label}
+                                gLine2Label={this.props.gLine2Label}
+                                gLine1Slope={this.props.gLine1Slope}
+                                gLine2Slope={this.props.gLine2Slope}
+                                gLine1OffsetX={this.props.gLine1OffsetX}
+                                gLine1OffsetY={this.props.gLine1OffsetY}
+                                gLine2OffsetX={this.props.gLine2OffsetX}
+                                gLine2OffsetY={this.props.gLine2OffsetY}
+                                gXAxisLabel={this.props.gXAxisLabel}
+                                gYAxisLabel={this.props.gYAxisLabel}
+                                gIntersectionLabel={this.props.gIntersectionLabel}
+                                gIntersectionHorizLineLabel={this.props.gIntersectionHorizLineLabel}
+                                gIntersectionVertLineLabel={this.props.gIntersectionVertLineLabel}
+                                updateGraph={this.props.updateGraph}
+                            />
+
+                    </div>
+                <hr/>
+                <button type="button"
+                    className="btn btn-primary btn-sm"
+                    onClick={this.handleSaveGraph.bind(this)}>Save</button>
+                {this.props.gId &&
+                        <a role="button"
+                            className="btn btn-danger btn-sm float-md-right"
+                            href={"/graph/" + this.props.gId + "/delete/"}>Delete Graph</a>}
+                    </form>
+                </div>
+            );
+            }
         } else if (this.props.gType === 1) {
             // Non-Linear Demand Supply
             return <div className="GraphEditor">
@@ -573,9 +667,6 @@ export default class GraphEditor extends React.Component {
     }
     handleSaveGraph() {
         this.props.saveGraph();
-    }
-    componentDidMount() {
-        console.log('hello nick');
     }
 }
 
