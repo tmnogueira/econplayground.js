@@ -1104,14 +1104,23 @@ const mkConsumptionSaving = function(board, options) {
     return g;
 };
 
-class ConsumptionSavingGraphAUC extends ConsumptionSavingGraph {
+class OptimalChoiceGraph extends ConsumptionSavingGraph {
+    drawArc() {
+        const p1 = board.create('point', [2.0, 2.0]);
+        const p2 = board.create('point', [1.0, 0.5]);
+        const p3 = board.create('point', [3.5, 1.0]);
+
+        this.board.create('circumcirclearc', [p1, p2, p3]);
+    }
     make() {
         super.make();
+
+        this.drawArc();
     }
 }
 
-const mkConsumptionSavingAUC = function(board, options) {
-    let g = new ConsumptionSavingGraphAUC(board, options);
+const mkOptimalChoice = function(board, options) {
+    let g = new OptimalChoiceGraph(board, options);
     g.make();
     g.postMake();
     return g;
@@ -1357,5 +1366,5 @@ export const graphTypes = [
     null, mkConsumptionSaving,
     mkADAS,
     mkDemandSupplyAUC, mkNonLinearDemandSupplyAUC,
-    mkConsumptionSavingAUC
+    mkOptimalChoice
 ];
